@@ -64,13 +64,17 @@
     var password = $("#password").val();
     if (username == "") {
       toastr.error("Username can't be empty")
+    }else if (email == "") {
+      toastr.error("Email can't be empty")
     }else if (password == "") {
       toastr.error("Password can't be empty")
+    }else if (upline == "") {
+      toastr.error("Upline can't be empty")
     }else{
       $("#loading").show()
       $("#login").hide()
       var settings = {
-        "url": "./auth/login",
+        "url": "./register/action",
         "method": "POST",
         "timeout": 0,
         "headers": {
@@ -78,7 +82,9 @@
         },
         "data": {
           "username": username,
-          "password": password
+          "email": email,
+          "password": password,
+          "upline": upline
         }
       };
 
@@ -88,7 +94,6 @@
         $("#username").val("")
         $("#password").val("")
         if (response.code == 200) {
-          localStorage.setItem('token', response.data);
           toastr.success(response.message)
           setTimeout(function() {
             window.location.href="./"
