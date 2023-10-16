@@ -59,7 +59,8 @@
 <script>
   $("#loading").hide()
   $("#login").click(function() {
-    
+    var email = $("#email").val();
+    var upline = $("#upline").val();
     var username = $("#username").val();
     var password = $("#password").val();
     if (username == "") {
