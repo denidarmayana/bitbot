@@ -11,11 +11,33 @@ var settings = {
     "token": localStorage.getItem('token'),
   }
 };
-
 $.ajax(settings).done(function (response) {
 	localStorage.setItem("socket",response.socket_token)
-	console.log(response.socket_token)
 });
+
+$("#coin_select").change(function() {
+	var coin = $("#coin_select").val();
+	var settings = {
+	  "url": "./home/getcoin",
+	  "method": "POST",
+	  "timeout": 0,
+	  "headers": {
+	    "Content-Type": "application/x-www-form-urlencoded",
+	  },
+	  "data": {
+	    "coin": coin,
+	  }
+	};
+	$.ajax(settings).done(function (response) {
+		console.log(response)
+		if (response.code == 200) {
+			$("#balance_host").val(response.data.balance)
+		}else{
+			window.location.href="./wallet"
+		}
+	});
+})
+
 const socket = new WebSocket('ws://galaxy7.tech:3000');
 socket.addEventListener('open', (event) => {
 	  console.log('Koneksi terbuka.');
@@ -32,6 +54,7 @@ if (localStorage.getItem('socket') != "") {
 }
 socket.addEventListener('message', (event) => {
 			var json = JSON.parse(event.data);
+			console.log(event.data)
 			if(json.action == "update_balance"){
 				$("#balance").val(json.user_balance)
 				var settings = {
@@ -57,6 +80,7 @@ socket.addEventListener('close', (event) => {
     if (event.wasClean) {
         console.log(`Koneksi ditutup dengan kode: ${event.code} dan alasan: ${event.reason}`);
     } else {
+    		window.location.href="./auth/logout";
         console.error('Koneksi terputus secara tiba-tiba');
     }
 });
@@ -146,7 +170,8 @@ function getChance(min, max) {
 }
 
 $("#start").click(function() {
-	var balance = $("#balance").val();
+	var balance = $("#balance_host").val();
+	var coins = $("#coin_select").val()
 	var base = $("#base").val();
 	var chance = $("#chance").val();
 	var shoot = $("#shoot").val();
@@ -220,18 +245,35 @@ $("#start").click(function() {
 		  cell3.innerHTML = total.toFixed(8)
 		  $("#global").val(parseFloat(globals).toFixed(8))
 		  var semua = parseFloat(globals) + parseFloat(balance);
-		  $("#balance").val(parseFloat(semua).toFixed(8))
-		  if ($("#balance").val() < 0) {
+		  $("#balance_host").val(parseFloat(semua).toFixed(8))
+		  var settings = {
+		    "url": "./home/updatebalance",
+		    "method": "POST",
+		    "timeout": 0,
+		    "headers": {
+		      "Content-Type": "application/x-www-form-urlencoded",
+		    },
+		    "data": {
+		      "balance": parseFloat(semua).toFixed(8),
+		      "coin": coins
+		    }
+		  };
+
+		  $.ajax(settings).done(function (response) {
+		  	
+		  });
+		  if ($("#balance_host").val() < baseValue.toFixed(8)) {
 		  	toastr.error("Trading Sroped")
 		  	clearInterval(intervalId);
 		  }
-	},500);
+	},1000);
 	}
 })
 $("#stop").click(function() {
 	toastr.error("Trading Sroped")
 	$("#start").show();
 	$("#stop").hide();
+	
 	clearInterval(intervalId);
 })
 

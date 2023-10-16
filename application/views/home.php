@@ -27,7 +27,7 @@
                     </h5>
                   </div>
                   <div class="col-6">
-                    <select class="form-select" aria-label="Default select example" id="coin">
+                    <select class="form-select" aria-label="Default select example" id="coin_select">
                       <option>Select Coin Type</option>
                       <option>MBIT</option>
                       <option>BTC</option>
@@ -44,7 +44,7 @@
               <div class="row">
                 <div class="col-12">
                   <label for="yourPassword" class="form-label">Balance</label>
-                  <input type="number" disabled class="form-control" id="balance" value="0.00000000" >
+                  <input type="number" disabled class="form-control" id="balance_host" value="0.00000000" >
                 </div>
               </div>
               <div class="row mt-4">
