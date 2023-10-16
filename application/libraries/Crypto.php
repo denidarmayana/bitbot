@@ -59,7 +59,7 @@ class Crypto
 		}';
 		return $this->curl("https://api.pasino.io/withdraw/place-withdrawal",$data);
 	}
-	public function register()
+	public function register($username,$email,$password,$upline)
 	{
 		$data = '{
 			"user_name":"'.$username.'",
