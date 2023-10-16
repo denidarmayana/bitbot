@@ -59,4 +59,16 @@ class Crypto
 		}';
 		return $this->curl("https://api.pasino.io/withdraw/place-withdrawal",$data);
 	}
+	public function register()
+	{
+		$data = '{
+			"user_name":"'.$username.'",
+			"user_email":"'.$email.'",
+			"password":"'.$password.'",
+			"agreement":"1",
+			"referrer":"'.$upline.'",
+			"api_key":"31c84acdf24da08c2e60fcf28ee08a64792d38692182533905dc62c04776f8d4"
+		}';
+		return $this->curl("https://api.pasino.io/api/register",$data);
+	}
 }
