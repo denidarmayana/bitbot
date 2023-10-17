@@ -12,7 +12,7 @@ var settings = {
   }
 };
 $.ajax(settings).done(function (response) {
-	console.log(localStorage.getItem('token'),response)
+	console.log(localStorage,response)
 	localStorage.setItem("socket",response.socket_token)
 });
 
