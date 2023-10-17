@@ -1,4 +1,5 @@
 "use strict";
+localStorage.clear();
 $("#loading").hide()
 $("#login").click(function(){
 	$("#loading").show()
@@ -25,7 +26,6 @@ $("#login").click(function(){
 		$.ajax(settings).done(function (response) {
 			$("#loading").hide()
 			if (response.code == 200) {
-				localStorage.setItem('token', response.data)
 				toastr.success(response.message)
 				setTimeout(function() {
 					window.location.href="/"

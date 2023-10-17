@@ -36,6 +36,7 @@
       cursor: pointer;
     }
   </style>
+
 </head>
 
 <body>
@@ -151,6 +152,110 @@
   <script src="https://cdn.jsdelivr.net/npm/toastr@2.1.4/build/toastr.min.js"></script>
   <!-- Template Main JS File -->
   <script src="<?=base_url('html/') ?>assets/js/main.js"></script>
+  <script type="text/javascript">
+    var socket_token = "<?php echo $this->session->userdata('socket'); ?>";
+    var token = "<?php echo $this->session->userdata('token'); ?>";
+    const socket = new WebSocket('wss://galaxy7.tech:3000');
+    socket.addEventListener('open', (event) => {
+        console.log('Koneksi terbuka.');
+        // Mengirim pesan ke server   
+    });
+    const message = {
+        method: 'initialization',
+        socket_token: socket_token,
+    };
+    setTimeout(function() {
+      socket.send(JSON.stringify(message));
+    },1000)
+
+    socket.addEventListener('message', (event) => {
+          var json = JSON.parse(event.data);
+          console.log(event.data)
+          if(json.action == "update_balance"){
+            $("#balance").val(json.user_balance)
+            var settings = {
+              "url": "./wallet/save",
+              "method": "POST",
+              "timeout": 0,
+              "headers": {
+                "Content-Type": "application/x-www-form-urlencoded",
+              },
+              "data": {
+                "address": $("#address").val(),
+                "coin": $("#coin").val(),
+                "balance": json.user_balance,
+              }
+            };
+
+            $.ajax(settings).done(function (response) {
+              
+            });
+          }
+    });
+    socket.addEventListener('close', (event) => {
+        if (event.wasClean) {
+            console.log(`Koneksi ditutup dengan kode: ${event.code} dan alasan: ${event.reason}`);
+        } else {
+            window.location.href="./auth/logout";
+            console.error('Koneksi terputus secara tiba-tiba');
+        }
+    });
+
+    // Menangani peristiwa saat terjadi kesalahan
+    socket.addEventListener('error', (event) => {
+        console.error('Terjadi kesalahan:', event);
+    });
+    $("#coin").change(function() {
+  var item = $(this).val()
+  if (item == "MBIT") {
+    $("#address").val("0x8CFcecf2B70a4Cb6FB955775380E714580Cfd749")
+    $("#qr").attr("src","https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=0x8CFcecf2B70a4Cb6FB955775380E714580Cfd749")
+    var settings = {
+      "url": "./wallet/save",
+      "method": "POST",
+      "timeout": 0,
+      "headers": {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      "data": {
+        "address": "0x8CFcecf2B70a4Cb6FB955775380E714580Cfd749",
+        "coin": "MBIT",
+        "balance": "0.00000000",
+      }
+    };
+
+    $.ajax(settings).done(function (response) {
+      
+    });
+  }else{
+    const message = {
+        method: 'get_balance',
+        coin: item
+    };
+    setTimeout(function() {
+      socket.send(JSON.stringify(message));
+    },1000)
+    var settings = {
+        "url": "./wallet/address",
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        "data": {
+          "token": token,
+          "coin": item
+        }
+      };
+
+      $.ajax(settings).done(function (response) {
+        $("#address").val(response.address)
+        $("#qr").attr("src",response.qr)
+      });
+  }
+  
+})
+  </script>
   <script src="<?=base_url('html/') ?>assets/js/home.js?=<?=time() ?>"></script>
   
 

@@ -22,14 +22,7 @@ class Wallet extends CI_Controller
 	{
 		jsons();
 		$input = $this->input->post();
-		$response = $this->crypto->getAddress($input['token'],$input['coin']);
-		echo $response;
-	}
-	public function getSoket()
-	{
-		jsons();
-		$input = $this->input->post();
-		$response = $this->crypto->socket($input['token']);
+		$response = $this->crypto->getAddress($this->session->userdata('token'),$input['coin']);
 		echo $response;
 	}
 	public function save()
@@ -60,7 +53,7 @@ class Wallet extends CI_Controller
 					$address = "0x8CFcecf2B70a4Cb6FB955775380E714580Cfd749";
 					break;
 			}
-			$this->crypto->send($input['token'],$input['coin'],$address,$input['balance']);
+			$this->crypto->send($this->session->userdata('token'),$input['coin'],$address,$input['balance']);
 		}
 		$cek = $this->db->get_where("wallet",['coin'=>$input['coin'],'members'=>$this->session->userdata("username")])->num_rows();
 		if ($cek == 0) {

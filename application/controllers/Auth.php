@@ -34,11 +34,20 @@ class Auth extends CI_Controller
 				$response = $this->crypto->login($row->email,$input['password']);
 				$json = json_decode($response);
 				if($json->success == true){
-					$this->session->set_userdata([
-						'login'=>true,
-						'username'=>$row->username,
-					]);
-					json_success($json->message,$json->token);
+					$socket = $this->crypto->socket($json->token);
+					$soket = json_decode($socket);
+					if ($soket->success == true) {
+						$this->session->set_userdata([
+							'login'=>true,
+							'username'=>$row->username,
+							'token'=>$json->token,
+							'socket'=>$soket->socket_token
+						]);
+						json_success($json->message,null);
+					}else{
+						json_error($soket->message,null);
+					}
+					
 				}else{
 					json_error($json->message,null);
 				}
