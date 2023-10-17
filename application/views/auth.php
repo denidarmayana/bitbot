@@ -60,22 +60,16 @@
   $("#login").click(function() {
     
     var username = $("#username").val();
-    var email = $("#email").val();
     var password = $("#password").val();
-    var upline = $("#upline").val();
     if (username == "") {
       toastr.error("Username can't be empty")
-    }else if (email == "") {
-      toastr.error("Email can't be empty")
     }else if (password == "") {
       toastr.error("Password can't be empty")
-    }else if (upline == "") {
-      toastr.error("Upline can't be empty")
     }else{
       $("#loading").show()
       $("#login").hide()
       var settings = {
-        "url": "./register/acrion",
+        "url": "./auth/login",
         "method": "POST",
         "timeout": 0,
         "headers": {
