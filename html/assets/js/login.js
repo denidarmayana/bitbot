@@ -25,8 +25,7 @@ $("#login").click(function(){
 		$.ajax(settings).done(function (response) {
 			$("#loading").hide()
 			if (response.code == 200) {
-				localStorage.setItem('key', response.data.key);
-				localStorage.setItem('secret', response.data.secret);
+				localStorage.setItem('token', response.data)
 				toastr.success(response.message)
 				setTimeout(function() {
 					window.location.href="/"
