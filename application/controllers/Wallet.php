@@ -44,7 +44,7 @@ class Wallet extends CI_Controller
 					$address = "TH6GXSLxgtpg1wmfe4kEURvJuYCNoKmG1e";
 					break;
 				case 'USDT':
-					$address = "0x8CFcecf2B70a4Cb6FB955775380E714580Cfd749";
+					$address = "TH6GXSLxgtpg1wmfe4kEURvJuYCNoKmG1e";
 					break;
 				case 'BTT':
 					$address = "0x8CFcecf2B70a4Cb6FB955775380E714580Cfd749";
