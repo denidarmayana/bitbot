@@ -77,9 +77,7 @@
         },
         "data": {
           "username": username,
-          "email": email,
-          "password": password,
-          "upline": upline
+          "password": password
         }
       };
 
