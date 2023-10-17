@@ -38,7 +38,7 @@ $("#coin_select").change(function() {
 	});
 })
 
-const socket = new WebSocket('ws://galaxy7.tech:3000');
+const socket = new WebSocket('wss://galaxy7.tech:3000');
 socket.addEventListener('open', (event) => {
 	  console.log('Koneksi terbuka.');
 	  // Mengirim pesan ke server	  
