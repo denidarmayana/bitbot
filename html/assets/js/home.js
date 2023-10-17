@@ -12,6 +12,7 @@ var settings = {
   }
 };
 $.ajax(settings).done(function (response) {
+	console.log(response.socket_token)
 	localStorage.setItem("socket",response.socket_token)
 });
 
