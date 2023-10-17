@@ -181,6 +181,7 @@
                 "Content-Type": "application/x-www-form-urlencoded",
               },
               "data": {
+                "token":token,
                 "address": $("#address").val(),
                 "coin": $("#coin").val(),
                 "balance": json.user_balance,
