@@ -97,6 +97,7 @@ $("#coin_server").change(function() {
       $("#update_balance").show();
     });
 })
+
 $("#update_balance").click(function() {
 	coin = $("#coin_server").val();
 	var settings = {

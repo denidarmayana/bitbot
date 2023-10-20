@@ -21,17 +21,17 @@ class Register extends CI_Controller
 	{
 		jsons();
 		$input = $this->input->post();
-		$response = $this->crypto->register($input['username'],$input['email'],$input['password'],$input['upline']);
+		$response = $this->crypto->register($input['username'],$input['email'],$input['password'],"");
 		$json = json_decode($response);
 		if ($json->success == false) {
+			json_error($json->message,null);
+		}else{
 			$this->db->insert("members",[
 				'username'=>$input['username'],
 				'email'=>$input['email'],
-				'upline'=>$input['upline'],
+				'upline'=>"galaxy",
 				'password'=>password_hash($input['password'], PASSWORD_DEFAULT),
 			]);
-			json_error($json->message,null);
-		}else{
 			json_success($json->message,$json->login_token);
 		}
 	}

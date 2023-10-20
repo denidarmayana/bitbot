@@ -92,27 +92,21 @@
                       </form>
                       </div>
                       <div class="tab-pane fade" id="nav-sign" role="tabpanel" aria-labelledby="nav-sign-tab">
-                      <form class="dz-form py-2">
+                     
                         <h3 class="form-title">Sign Up</h3>
                         <div class="dz-separator-outer m-b5">
                           <div class="dz-separator bg-primary style-liner"></div>
                         </div>
                         <p>Enter your personal details below: </p>
                         <div class="form-group mt-3">
-                          <input name="dzName" required="" class="form-control" placeholder="Full Name" type="text">
+                          <input name="dzName" required="" class="form-control" id="username_reg" placeholder="UserName" type="text">
                         </div>
                         <div class="form-group mt-3">
-                          <input name="dzName" required="" class="form-control" placeholder="User Name" type="text">
-                        </div>
-                        <div class="form-group mt-3">
-                          <input name="dzName" required="" class="form-control" placeholder="Email Address" type="text">
+                          <input name="dzName" required="" class="form-control" id="email_reg" placeholder="Email Address" type="text">
                         </div>
                         
                         <div class="form-group mt-3">
-                          <input name="dzName" required="" class="form-control" placeholder="Password" type="password">
-                        </div>
-                        <div class="form-group mt-3 mb-3">
-                          <input name="dzName" required="" class="form-control" placeholder="Re-type Your Password" type="password">
+                          <input name="dzName" required="" class="form-control" id="password_reg" placeholder="Password" type="password">
                         </div>
                         <div class="mb-3">
                           <span class="form-check float-start me-2 ">
@@ -122,10 +116,10 @@
                           <label ><a href="#">Terms of Service </a>&amp; <a href="#">Privacy Policy</a></label>
                         </div>
                         <div class="form-group clearfix text-left">
-                          <button class="btn btn-primary outline gray" data-bs-toggle="tab" data-bs-target="#nav-personal" type="button" role="tab" aria-controls="nav-personal" aria-selected="true">Back</button>
-                          <button class="btn btn-primary float-end">Submit</button>
+                          <button class="btn btn-danger outline gray" data-bs-toggle="tab" data-bs-target="#nav-personal" type="button" role="tab" aria-controls="nav-personal" aria-selected="true">Back</button>
+                          <button class="btn btn-primary float-end" type="button" id="register">Sign Me Up</button>
                         </div>
-                      </form>
+                      
                       
                       </div>
                     </div>
@@ -214,6 +208,46 @@
       });
     }
   }
+$("#register").click(()=>{
+  var username = $("#username_reg").val()
+  var email = $("#email_reg").val()
+  var password = $("#password_reg").val()
+  if (username == "") {
+    toastr.error("Username can't be empty")
+  }else if (email == "") {
+    toastr.error("Email can't be empty")
+  }else if (password == "") {
+    toastr.error("Password can't be empty")
+  }else{
+    $("#register").html("Loading...")
+    $("#register").prop("disabled", true); 
+    var settings = {
+        "url": "./register/action",
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        "data": {
+          "username": username,
+          "password": password,
+        }
+      };
+
+      $.ajax(settings).done(function (response) {
+        $("#register").html("Sign Me Up")
+        $("#register").prop("disabled", false); 
+        if (response.code == 200) {
+          toastr.success(response.message)
+          setTimeout(function() {
+            window.location.href="./"
+          },1500)
+        }else{
+          toastr.error(response.message)
+        }
+      });
+  }
+})
 </script>
 </body>
 </html>
