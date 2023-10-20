@@ -12,6 +12,17 @@ if (!function_exists("cekSession")) {
 	}
 }
 
+if (!function_exists("cekPanel")) {
+	function cekPanel()
+	{
+		$app =& get_instance();
+		if ($app->session->userdata("panel") == TRUE) {
+			return TRUE;
+		}else{
+			redirect("login");
+		}
+	}
+}
 if (!function_exists("json_success")) {
 	function json_success($message,$data)
 	{
