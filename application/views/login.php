@@ -159,7 +159,7 @@
 <script src="<?=base_url('assets/') ?>vendor/global/global.min.js?=<?=time() ?>"></script>
 <script src="<?=base_url('assets/') ?>vendor/bootstrap-select/dist/js/bootstrap-select.min.js?=<?=time() ?>"></script>
 <script src="<?=base_url('assets/') ?>js/deznav-init.js?=<?=time() ?>"></script>
-<script src="<?=base_url('assets/') ?>js/styleSwitcher.js"></script>
+
 <script src="<?=base_url('assets/') ?>vendor/toastr/js/toastr.min.js?=<?=time() ?>"></script>
 <script type="text/javascript">
   body.attr('data-theme-version', "dark");
