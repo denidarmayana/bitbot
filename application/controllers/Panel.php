@@ -34,4 +34,20 @@ class Panel extends CI_Controller
 		];
 		$this->template->load("panel",'admin/wd',$data);
 	}
+	public function deposit()
+	{
+		$data = [
+			'depo'=>$this->db->order_by('id','desc')->get("wallet")->result(),
+		];
+		$this->template->load("panel",'admin/deposit',$data);
+	}
+	public function show()
+	{
+		$data = "<option>Select Members</option>";
+		$result = $this->db->order_by('id','desc')->get("members")->result();
+		foreach ($result as $key) {
+			$data.="<option>".$key->username."</option>";
+		}
+		echo $data;
+	}
 }
