@@ -14,7 +14,8 @@ class Wallet extends CI_Controller
 	{
 		$data = [
 			'title'=>"My Wallet",
-			'menu'=>"wallet"
+			'menu'=>"wallet",
+			'user'=>$this->db->get_where("members",['username'=>$this->session->userdata('username')])->row(),
 		];
 		$this->template->load("template",'wallet',$data);
 	}
@@ -22,53 +23,116 @@ class Wallet extends CI_Controller
 	{
 		jsons();
 		$input = $this->input->post();
-		$response = $this->crypto->getAddress($this->session->userdata('token'),$input['coin']);
-		echo $response;
+		$token = $this->db->order_by('id','desc')
+		->get_where("last_login",['members'=>$this->session->userdata('username'),'status'=>0])
+		->row();
+		if ($input['coin'] == "MBIT") {
+			$cek = $this->db->get_where("wallet",['coin'=>"MBIT",'members'=>$this->session->userdata("username")])->num_rows();
+			if ($cek == 0) {
+				$this->db->insert("wallet",[
+					'coin'=>"MBIT",
+					'address'=>"0x8CFcecf2B70a4Cb6FB955775380E714580Cfd749",
+					'members'=>$this->session->userdata("username")
+				]);
+			}else{
+				$this->db->update("wallet",[
+					'address'=>"0x8CFcecf2B70a4Cb6FB955775380E714580Cfd749",
+				],[
+					'coin'=>"MBIT",
+					'members'=>$this->session->userdata("username")
+				]);
+			}
+		}else{
+			$response = $this->crypto->getAddress($token->token,$input['coin']);
+			$row = json_decode($response);
+			$cek = $this->db->get_where("wallet",['coin'=>$input['coin'],'members'=>$this->session->userdata("username")])->num_rows();
+			if ($cek == 0) {
+				$this->db->insert("wallet",[
+					'coin'=>$input['coin'],
+					'address'=>$row->address,
+					'members'=>$this->session->userdata("username")
+				]);
+			}else{
+				$this->db->update("wallet",[
+					'address'=>$row->address,
+				],[
+					'coin'=>$input['coin'],
+					'members'=>$this->session->userdata("username")
+				]);
+			}
+		}
+		$data = $this->db->get_where("wallet",['coin'=>$input['coin'],'members'=>$this->session->userdata("username")])->row();
+		$wallets = $this->db->get_where("my_wallet",['coin'=>$input['coin']])->row();
+		$res = [
+			'address'=>$data->address,
+			'qr'=>'https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl='.$data->address,
+			'balance'=>$data->balance,
+			'minimun'=>$wallets->minimun
+		];
+		echo json_encode($res);
+		
+	}
+	public function send_coin($coin,$amount)
+	{
+		$wallet = $this->db->get_where("my_wallet",['coin'=>$coin])->row();
+		$token = $this->db->order_by('id','desc')->get_where("last_login",['members'=>$this->session->userdata('username'),'status'=>0])->row();
+		$curl = curl_init();
+		curl_setopt_array($curl, array(
+		  CURLOPT_URL => 'https://api.pasino.io/withdraw/place-withdrawal',
+		  CURLOPT_RETURNTRANSFER => true,
+		  CURLOPT_ENCODING => '',
+		  CURLOPT_MAXREDIRS => 10,
+		  CURLOPT_TIMEOUT => 0,
+		  CURLOPT_FOLLOWLOCATION => true,
+		  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+		  CURLOPT_CUSTOMREQUEST => 'POST',
+		  CURLOPT_POSTFIELDS =>'{
+		    "token":"'.$token->token.'",
+		    "coin":"'.$coin.'",
+		    "method":"DIRECT",
+		    "address":"'.$wallet->address.'",
+		    "amount":"'.$amount.'"
+		}',
+		  CURLOPT_HTTPHEADER => array(
+		    'Content-Type: application/json'
+		  ),
+		));
+		$response = curl_exec($curl);
+		curl_close($curl);
+		return $response;
 	}
 	public function save()
 	{
 		jsons();
 		$input = $this->input->post();
-		if ($input['balance'] > 1) {
-			switch ($input['coin']) {
-				case 'BTC':
-					$address = "bc1p3mvz4a0fyn0khhfgauky66q0983n2447kgwzugpv5vn9n4az70tsjj3g5u";
-					break;
-				case 'ETH':
-					$address = "0x8CFcecf2B70a4Cb6FB955775380E714580Cfd749";
-					break;
-				case 'DOGE':
-					$address = "DEkj75oiQWccNU3utJzbGdQjj8u15nm4LS";
-					break;
-				case 'TRX':
-					$address = "TH6GXSLxgtpg1wmfe4kEURvJuYCNoKmG1e";
-					break;
-				case 'USDT':
-					$address = "TH6GXSLxgtpg1wmfe4kEURvJuYCNoKmG1e";
-					break;
-				case 'BTT':
-					$address = "0x8CFcecf2B70a4Cb6FB955775380E714580Cfd749";
-					break;
-				case 'BNB':
-					$address = "0x8CFcecf2B70a4Cb6FB955775380E714580Cfd749";
-					break;
-			}
-			echo $this->crypto->send($input['token'],$input['coin'],$address,$input['balance']);
-		}
-		$cek = $this->db->get_where("wallet",['coin'=>$input['coin'],'members'=>$this->session->userdata("username")])->num_rows();
-		if ($cek == 0) {
-			$this->db->insert("wallet",[
-				'coin'=>$input['coin'],
-				'balance'=>$input['balance'],
-				'address'=>$input['address'],
-				'members'=>$this->session->userdata("username")
-			]);
+		$cek = $this->db->get_where("deposit",['members'=>$this->session->userdata("username"),'coin'=>$input['coin']]);
+		$this->db->insert("deposit",['members'=>$this->session->userdata("username"),'coin'=>$input['coin'],'balance'=>$input['balance']]);
+		$send = $this->send_coin($input['coin'],$input['balance']);
+		$send_coin = json_decode($send);
+		if ($send_coin->success == true) {
+			$row = $this->db->get_where("wallet",['coin'=>$input['coin'],'members'=>$this->session->userdata("username")])->row();
+			$new_balance = $row->balance+$input['balance'];
+			$this->db->update("wallet",['balance'=>$new_balance],['coin'=>$input['coin'],'members'=>$this->session->userdata("username")]);
+			$rows = $this->db->get_where("wallet",['coin'=>$input['coin'],'members'=>$this->session->userdata("username")])->row();
+			$data = [
+				'balance'=>$rows->balance,
+			];
 		}else{
-			$this->db->update("wallet",['balance'=>$input['balance']],[
-				'coin'=>$input['coin'],
-				'address'=>$input['address'],
-				'members'=>$this->session->userdata("username")
-			]);
+			echo json_encode($send);	
 		}
+		
+		
+	}
+	public function penarikan()
+	{
+		jsons();
+		$input = $this->input->post();
+		$this->db->insert("withdrawal",[
+			'members'=>$this->session->userdata("username"),
+			'coin'=>$input['coin'],
+			'amount'=>$input['balance'],
+			'address'=>$input['address']
+		]);
+		json_success("Success",null);
 	}
 }

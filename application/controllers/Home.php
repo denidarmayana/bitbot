@@ -14,7 +14,9 @@ class Home extends CI_Controller
 	{
 		$data = [
 			'title'=>"Dashboard",
-			'menu'=>"home"
+			'menu'=>"home",
+			'user'=>$this->db->get_where("members",['username'=>$this->session->userdata('username')])->row(),
+			'login'=>$this->db->order_by('id','desc')->get_where("last_login",['members'=>$this->session->userdata('username'),'status'=>0])->row(),
 		];
 		$this->template->load("template",'home',$data);
 	}
@@ -28,6 +30,48 @@ class Home extends CI_Controller
 		}else{
 			json_success("Coin Found",$cek->row());
 		}
+	}
+	public function getType()
+	{
+		return mt_rand(0, 1);
+	}
+	public function getStatus()
+	{
+		return mt_rand(0, 1);
+	}
+	public function trade()
+	{
+		jsons();
+		$input = $this->input->post();
+		$type = $this->getType();
+		$status = $this->getStatus();
+		$opit = $input['profit'] - $input['base'];
+		if ($status == 1) {
+			$balance = $input['balance']+$opit;
+			$profit = $input['profit'];
+		}else{
+			$balance = $input['balance']-$input['base'];
+			$profit = $input['base'];
+		}
+		$this->db->insert("trade",[
+			'members'=>$this->session->userdata("username"),
+			'coin'=>$input['coin'],
+			'base'=>$input['base'],
+			'chance'=>$input['chance'],
+			'payout'=>$input['payout'],
+			'profit'=>$input['profit'],
+			'balance'=>$balance,
+			'type'=>$type,
+			'status'=>$status
+		]);
+		$this->db->update("wallet",['balance'=>$balance],['coin'=>$input['coin'],'members'=>$this->session->userdata("username")]);
+		json_success("Success",[
+			'type'=>$type,
+			'base'=>$input['base'],
+			'profit'=>$profit,
+			'balance'=>$balance,
+			'status'=>$status
+		]);
 	}
 	public function updatebalance()
 	{

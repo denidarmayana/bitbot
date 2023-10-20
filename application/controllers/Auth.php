@@ -8,6 +8,7 @@ class Auth extends CI_Controller
 	function __construct()
 	{
 		parent::__construct();
+		date_default_timezone_set("Asia/Jakarta");
 	}
 	public function index()
 	{
@@ -37,11 +38,15 @@ class Auth extends CI_Controller
 					$socket = $this->crypto->socket($json->token);
 					$soket = json_decode($socket);
 					if ($soket->success == true) {
+						$this->db->insert("last_login",[
+							'members'=>$row->username,
+							'token'=>$json->token,
+							'socket'=>$soket->socket_token,
+							'last_login'=>date("Y-m-d H:i:s")
+						]);
 						$this->session->set_userdata([
 							'login'=>true,
-							'username'=>$row->username,
-							'token'=>$json->token,
-							'socket'=>$soket->socket_token
+							'username'=>$row->username
 						]);
 						json_success($json->message,null);
 					}else{
