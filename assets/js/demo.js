@@ -231,7 +231,7 @@ function getStatusTrade(coin,base_trade,chance,payout,profit,balance) {
 		  		// Gunakan setTimeout untuk menunda eksekusi getStatusTrade selama 500 milidetik
 					if (response.data.balance > newval) {
 		  			setTimeout(function() {
-						    getStatusTrade(coin, newval, chance, payout, profit, balance);
+						    getStatusTrade(coin, newval, chance, payout, profit, response.data.balance);
 						}, 500);	
 		  		}else{
 		  			isLoopRunning = false;
@@ -259,7 +259,7 @@ function getStatusTrade(coin,base_trade,chance,payout,profit,balance) {
 		  		// Gunakan setTimeout untuk menunda eksekusi getStatusTrade selama 500 milidetik
 		  		if (response.data.balance > newval) {
 		  			setTimeout(function() {
-						    getStatusTrade(coin, newval, chance, payout, profit, balance);
+						    getStatusTrade(coin, newval, chance, payout, profit, response.data.balance);
 						}, 500);	
 		  		}else{
 		  			isLoopRunning = false;
