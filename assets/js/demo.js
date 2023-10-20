@@ -232,7 +232,7 @@ function getStatusTrade(coin,base_trade,chance,payout,profit,balance) {
 					if (response.data.balance > newval) {
 		  			setTimeout(function() {
 						    getStatusTrade(coin, newval, chance, payout, profit, response.data.balance);
-						}, 500);	
+						}, 1000);	
 		  		}else{
 		  			isLoopRunning = false;
 		  			toastr.error("You don't have enought balance")
@@ -260,7 +260,7 @@ function getStatusTrade(coin,base_trade,chance,payout,profit,balance) {
 		  		if (response.data.balance > newval) {
 		  			setTimeout(function() {
 						    getStatusTrade(coin, newval, chance, payout, profit, response.data.balance);
-						}, 500);	
+						}, 1000);	
 		  		}else{
 		  			isLoopRunning = false;
 		  			toastr.error("You don't have enought balance")
@@ -300,7 +300,7 @@ $("#start").click(function() {
 			const profit = betAmt.times(actualPayout).minus(betAmt);
 			setTimeout(function() {
 			    getStatusTrade(coin, base_trade, chance, payout, profit, balance);
-			}, 500);	
+			}, 1000);	
 		}
 		
 	}
