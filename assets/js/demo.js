@@ -117,6 +117,34 @@ $("#update_balance").click(function() {
     	// $("#balance_depo").val(response.balance)
   });
 })
+$("#update_deposit").click(()=>{
+	var username = $("#show_members").val()
+	var balance = $("#amount_balance").val()
+	if (balance == "") {
+		toastr.error("Amount can't be empty")
+	}else{
+		var settings = {
+      "url": "./update",
+      "method": "POST",
+      "timeout": 0,
+      "headers": {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      "data": {
+        "username": username,
+        "balance": parseFloat(balance).toFixed(8) 
+      }
+    };
+		$.ajax(settings).done(function (response) {
+			if (response.code == 200) {
+          toastr.success(response.message)
+          setTimeout(function() {
+            window.location.href="./deposit"
+          },1500)
+      }
+	  });
+	}
+})
 $("#penarikan").click(()=>{
 	coin = $("#coin_server").val();
 	var wallet = $("#wallet_wd").val();

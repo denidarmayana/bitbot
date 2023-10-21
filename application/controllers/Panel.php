@@ -50,4 +50,18 @@ class Panel extends CI_Controller
 		}
 		echo $data;
 	}
+	public function update()
+	{
+		jsons();
+		$input = $this->input->post();
+		$cek = $this->db->get_where('wallet',['members'=>$input['username'],'coin'=>"MBIT"])->row();
+		$new_balance = floatval($cek->balance)+floatval($input['balance']);
+		$this->db->update('wallet',['balance'=>$new_balance],['members'=>$input['username'],'coin'=>"MBIT"]);
+		$this->db->insert("deposit",[
+			'members'=>$input['username'],
+			'coin'=>"MBIT",
+			'balance'=>$input['balance'],
+		]);
+		json_success("Success",null);
+	}
 }
