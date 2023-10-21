@@ -27,9 +27,7 @@ socket.addEventListener('close', (event) => {
   if (event.wasClean) {
     console.log(event);
   } else {
-  	setInterval(function() {
-    	location.reload();
-		}, 5000);
+  	
     console.error('WebSocket connection abruptly closed');
   }
 });
