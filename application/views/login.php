@@ -231,6 +231,7 @@ $("#register").click(()=>{
         "data": {
           "username": username,
           "password": password,
+          "email":email
         }
       };
 
