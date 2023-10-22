@@ -21,9 +21,9 @@ class Register extends CI_Controller
 	{
 		jsons();
 		$input = $this->input->post();
-		$response = $this->crypto->register($input['username'],$input['email'],$input['password'],"");
+		$response = $this->crypto->register($input['username'],$input['email'],$input['password']);
 		$json = json_decode($response);
-		if ($json->success == false) {
+		if ($json->code == 203) {
 			json_error($json->message,null);
 		}else{
 			$this->db->insert("members",[

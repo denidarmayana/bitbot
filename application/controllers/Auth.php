@@ -26,22 +26,22 @@ class Auth extends CI_Controller
 	{
 		jsons();
 		$input = $this->input->post();
-		$members = $this->db->get_where("members",['username'=>$input['username']]);
+		$members = $this->db->get_where("members",['email'=>$input['email']]);
 		if ($members->num_rows() == 0) {
 			json_error("Username not registerd",null);
 		}else{
 			$row = $members->row();
 			if(password_verify($input['password'], $row->password)){
-				$response = $this->crypto->login($row->email,$input['password']);
+				$response = $this->crypto->login($input['email'],$input['password']);
 				$json = json_decode($response);
-				if($json->success == true){
-					$socket = $this->crypto->socket($json->token);
+				if($json->code == 200){
+					$socket = $this->crypto->socket($json->data);
 					$soket = json_decode($socket);
-					if ($soket->success == true) {
+					if ($soket->code == 200) {
 						$this->db->insert("last_login",[
 							'members'=>$row->username,
-							'token'=>$json->token,
-							'socket'=>$soket->socket_token,
+							'token'=>$json->data,
+							'socket'=>$soket->data->token,
 							'last_login'=>date("Y-m-d H:i:s")
 						]);
 						$this->session->set_userdata([

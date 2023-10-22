@@ -1,185 +1,164 @@
 <!DOCTYPE html>
-<html lang="en" class="h-100">
-
+<html lang="en" data-bs-theme="dark">
 <head>
-    <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Login</title>
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="format-detection" content="telephone=no">
-  <title>Auth | BitBot Crypoto Trading Bot</title>
-  
-  <!-- FAVICONS ICON -->
-  <link rel="shortcut icon" type="image/png" href="<?=base_url('assets/') ?>images/icon.png">
-  <link href="<?=base_url('assets/') ?>vendor/bootstrap-select/dist/css/bootstrap-select.min.css?=<?=time() ?>" rel="stylesheet">
-  <link href="<?=base_url('assets/') ?>css/style.css?=<?=time() ?>" rel="stylesheet">
-  <!-- Toastr -->
-  <link rel="stylesheet" href="<?=base_url('assets/') ?>vendor/toastr/css/toastr.min.css?=<?=time() ?>">
+  <link rel="icon" type="img/png" href="<?=base_url('assets/icon.png') ?>">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/toastr@2.1.4/build/toastr.min.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/toastr@2.1.4/build/toastr.min.js"></script>
+  <style>
+    .fa-brands {
+      cursor: pointer;
+    }
+  </style>
 </head>
+<body>
 
-<body class="vh-100" data-theme-version="dark">
-  <div class="page-wraper">
-    <!-- Content -->
-    <div class="browse-job login-style3">
-      <!-- Coming Soon -->
-      <div class="bg-img-fix overflow-hidden" style="background:#fff url(assets/images/background/bg6.jpg); height: 100vh;">
-        <div class="row gx-0">
-          <div class="col-xl-4 col-lg-5 col-md-6 col-sm-12 vh-100 bg-white ">
-            <div id="mCSB_1" class="mCustomScrollBox mCS-light mCSB_vertical mCSB_inside" style="max-height: 653px;" tabindex="0">
-              <div id="mCSB_1_container" class="mCSB_container" style="position:relative; top:0; left:0;" dir="ltr">
-                <div class="login-form style-2">
-                  
-                  
-                  <div class="card-body">
-                    <div class="logo-header">
-                      <a href="<?=base_url('') ?>" class="logo"><img src="<?=base_url('assets/') ?>images/logo/logo_full.png" alt="" class="width-230 light-logo"></a>
-                      <a href="<?=base_url('') ?>" class="logo"><img src="<?=base_url('assets/') ?>images/logo/logofull_white.png" alt="" class="width-230 dark-logo"></a>
-                    </div>
-                  
-                    <nav>
-                      <div class="nav nav-tabs border-bottom-0" id="nav-tab" role="tablist">
-                        
-                    <div class="tab-content w-100" id="nav-tabContent">
-                      <div class="tab-pane fade show active" id="nav-personal" role="tabpanel" aria-labelledby="nav-personal-tab">
-                      
-                          <h3 class="form-title m-t0">Personal Information</h3>
-                          <div class="dz-separator-outer m-b5">
-                            <div class="dz-separator bg-primary style-liner"></div>
-                          </div>
-                          <p>Enter your e-mail address and your password. </p>
-                          <div class="form-group mb-3">
-                            <input type="email" class="form-control" id="user_login" placeholder="Username">
-                          </div>
-                          <div class="form-group mb-3">
-                            <input type="password" class="form-control" placeholder="Password" id="password_login">
-                          </div>
-                          <div class="form-group text-left mb-5 forget-main">
-                            <button type="button" class="btn btn-primary" id="signin" onclick="login()">Sign Me In</button>
-                            <span class="form-check d-inline-block float-end">
-                              <input type="checkbox" class="form-check-input" id="check1" name="example1">
-                              <label class="form-check-label" for="check1">Remember me</label>
-                            </span>
-                            
-                          </div>
-                          <div class="dz-social mb-3">
-                            <h5 class="form-title fs-20">Sign In With</h5>
-                            <ul class="dz-social-icon dz-border dz-social-icon-lg text-white">
-                              <li><a target="_blank" href="#" class="fab fa-facebook-f btn-facebook"></a></li>
-                              <li><a target="_blank" href="#" class="fab fa-google-plus-g btn-google-plus"></a></li>
-                              <li><a target="_blank" href="#" class="fab fa-linkedin-in btn-linkedin"></a></li>
-                              <li><a target="_blank" href="#" class="fab fa-twitter btn-twitter"></a></li>
-                            </ul>
-                          </div>
-                        
-                        <div class="text-center bottom"> 
-                          <button class="btn btn-primary button-md btn-block" id="nav-sign-tab" data-bs-toggle="tab" data-bs-target="#nav-sign" type="button" role="tab" aria-controls="nav-sign" aria-selected="false">Create an account</button> 
-                          
-                        </div>
-                      </div>
-                      <div class="tab-pane fade" id="nav-forget" role="tabpanel" aria-labelledby="nav-forget-tab">
-                      <form class="dz-form">
-                        <h3 class="form-title m-t0">Forget Password ?</h3>
-                        <div class="dz-separator-outer m-b5">
-                          <div class="dz-separator bg-primary style-liner"></div>
-                        </div>
-                        <p>Enter your e-mail address below to reset your password. </p>
-                        <div class="form-group mb-4">
-                          <input name="dzName" required="" class="form-control" placeholder="Email Address" type="text">
-                        </div>
-                        <div class="form-group clearfix text-left"> 
-                          <button class=" active btn btn-primary" id="nav-personal-tab" data-bs-toggle="tab" data-bs-target="#nav-personal" type="button" role="tab" aria-controls="nav-personal" aria-selected="true">Back</button>
-                          <button class="btn btn-primary float-end">Submit</button>
-                        </div>
-                      </form>
-                      </div>
-                      <div class="tab-pane fade" id="nav-sign" role="tabpanel" aria-labelledby="nav-sign-tab">
-                     
-                        <h3 class="form-title">Sign Up</h3>
-                        <div class="dz-separator-outer m-b5">
-                          <div class="dz-separator bg-primary style-liner"></div>
-                        </div>
-                        <p>Enter your personal details below: </p>
-                        <div class="form-group mt-3">
-                          <input name="dzName" required="" class="form-control" id="username_reg" placeholder="UserName" type="text">
-                        </div>
-                        <div class="form-group mt-3">
-                          <input name="dzName" required="" class="form-control" id="email_reg" placeholder="Email Address" type="text">
-                        </div>
-                        
-                        <div class="form-group mt-3">
-                          <input name="dzName" required="" class="form-control" id="password_reg" placeholder="Password" type="password">
-                        </div>
-                        <div class="mb-3">
-                          <span class="form-check float-start me-2 ">
-                            <input type="checkbox" class="form-check-input" id="check2" name="example1">
-                            <label class="form-check-label d-unset" for="check2">I agree to the</label>
-                          </span>
-                          <label ><a href="#">Terms of Service </a>&amp; <a href="#">Privacy Policy</a></label>
-                        </div>
-                        <div class="form-group clearfix text-left">
-                          <button class="btn btn-danger outline gray" data-bs-toggle="tab" data-bs-target="#nav-personal" type="button" role="tab" aria-controls="nav-personal" aria-selected="true">Back</button>
-                          <button class="btn btn-primary float-end" type="button" id="register">Sign Me Up</button>
-                        </div>
-                      
-                      
-                      </div>
-                    </div>
-                    
-                    </div>
-                  </nav>
-                  </div>
-                    <div class="card-footer">
-                      <div class=" bottom-footer clearfix m-t10 m-b20 row text-center">
-                      <div class="col-lg-12 text-center">
-                        <span> Copyright &copy; <?=date("Y") ?> by <span class="heart"></span>
-                        <a href="javascript:void(0);">Galaxy Seven </a> All rights reserved.</span> 
-                      </div>
-                    </div>
-                  </div>  
-                      
+<div class="container mt-3">
+  <div class="row justify-content-evenly mt-5">
+    <div class="col-md-5 col-11">
+        <div class="card" id="signin">
+            <div class="card-body">
+                <img src="<?=base_url('assets/logo_white.png') ?>" class="mb-3">
+                <h3 class="float-end">Login</h3>
+                <p class="mb-4">Please Input Username and Password</p>
+                <div class="form-floating mb-3">
+                  <input type="email" class="form-control" id="email" placeholder="name@example.com">
+                  <label for="email">Email address</label>
                 </div>
-              </div>
-              <div id="mCSB_1_scrollbar_vertical" class="mCSB_scrollTools mCSB_1_scrollbar mCS-light mCSB_scrollTools_vertical" style="display: block;">
-                <div class="mCSB_draggerContainer">
-                <div id="mCSB_1_dragger_vertical" class="mCSB_dragger" style="position: absolute; min-height: 0px; display: block; height: 652px; max-height: 643px; top: 0px;">
-                <div class="mCSB_dragger_bar" style="line-height: 0px;"></div><div class="mCSB_draggerRail"></div></div></div>
-              </div>
+                <div class="form-floating mb-3">
+                  <input type="password" class="form-control" id="password" placeholder="Password">
+                  <label for="password">Password</label>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-4">
+                    <button class="btn btn-primary btn-sm w-100" id="login" onclick="login()">Login</button>
+                    <button class="btn btn-primary btn-sm w-100" id="loading" type="button" disabled>
+                      <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                      Loading...
+                    </button>
+                  </div>
+                  <div class="col-8">
+                    <div class="form-check float-end">
+                      <input class="form-check-input" type="checkbox" id="disabledFieldsetCheck" >
+                      <label class="form-check-label" for="disabledFieldsetCheck">
+                        Remember me
+                      </label>
+                    </div>
+                  </div>
+                  
+                </div>
+                <div class="row mb-3">
+                  <div class="col-6">
+                    <h4>Sign In With</h4>
+                  </div>
+                  <div class="col-6">
+                    <div class="float-end">
+                      <i class="fa-brands fa-square-facebook fa-2x text-primary"></i>&nbsp; <i class="fa-brands fa-square-twitter fa-2x text-info"></i>&nbsp; <i class="fa-brands fa-square-google-plus fa-2x text-danger"></i>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-12">
+                    <button class="btn btn-success w-100" onclick="signup()">Create an Account</button>
+                  </div>
+                </div>
             </div>
+        </div>
+        <div class="card" id="signup">
+            <div class="card-body">
+                <img src="<?=base_url('assets/logo_white.png') ?>" class="mb-3">
+                <h3 class="float-end">Register</h3>
+                <p class="mb-4">Please Input Personal Data</p>
+                <div class="form-floating mb-3">
+                  <input type="text" class="form-control" id="username_reg" placeholder="Username">
+                  <label for="email">Username</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <input type="email" class="form-control" id="email_reg" placeholder="name@example.com">
+                  <label for="email">Email address</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <input type="password" class="form-control" id="password_reg" placeholder="Password">
+                  <label for="password">Password</label>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-4">
+                    <button class="btn btn-success btn-sm w-100" id="btn_daftar" onclick="daftar()">SignUp</button>
+                    <button class="btn btn-success btn-sm w-100" id="loading_register" type="button" disabled>
+                      <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                      Loading...
+                    </button>
+                  </div>
+                  <div class="col-8">
+                    <div class="form-check float-end">
+                      <input class="form-check-input" type="checkbox" id="disabledFieldsetCheck" >
+                      <label class="form-check-label" for="disabledFieldsetCheck">
+                        Term and Condition
+                      </label>
+                    </div>
+                  </div>
+                  
+                </div>
+                <div class="row mb-3">
+                  <div class="col-6">
+                    <h4>Sign Up With</h4>
+                  </div>
+                  <div class="col-6">
+                    <div class="float-end">
+                      <i class="fa-brands fa-square-facebook fa-2x text-primary"></i>&nbsp; <i class="fa-brands fa-square-twitter fa-2x text-info"></i>&nbsp; <i class="fa-brands fa-square-google-plus fa-2x text-danger"></i>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-12">
+                    <button class="btn btn-primary w-100" onclick="showsignin()">Sign In Account</button>
+                  </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3 justify-content-evenly">
+          <div class="col-12">
+            <p class="text-center m-0">Copyright &copy; <?=date("Y") ?> All rights reserved.</p>
+            <p class="text-center m-0">Crypto Trading Bot</p>
           </div>
         </div>
-      </div>
-      <!-- Full Blog Page Contant -->
     </div>
-    <!-- Content END-->
   </div>
-
-<!--**********************************
-  Scripts
-***********************************-->
-<!-- Required vendors -->
-<script src="<?=base_url('assets/') ?>vendor/global/global.min.js?=<?=time() ?>"></script>
-<script src="<?=base_url('assets/') ?>vendor/bootstrap-select/dist/js/bootstrap-select.min.js?=<?=time() ?>"></script>
-<script src="<?=base_url('assets/') ?>js/deznav-init.js?=<?=time() ?>"></script>
-
-<script src="<?=base_url('assets/') ?>vendor/toastr/js/toastr.min.js?=<?=time() ?>"></script>
+</div>
 <script type="text/javascript">
-  body.attr('data-theme-version', "dark");
-  function pesanSukses(pesan) {
-    return toastr.success(pesan, "Success")
+  $("#loading").hide()
+  $("#signup").hide()
+  $("#loading_register").hide()
+  function validateEmail(email) {
+    const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    return regex.test(email);
   }
-  function pesanError (pesan) {
-    return toastr.error(pesan, "Error")
+  function signup() {
+    $("#signup").show()
+    $("#signin").hide()
+  }
+  function showsignin() {
+    $("#signup").hide()
+    $("#signin").show()
   }
   function login() {
-    var username = $("#user_login").val();
-    var password = $("#password_login").val();
-    if (username == "") {
-      pesanError("Username Can't be Empty")
+    var email = $("#email").val()
+    var password = $("#password").val()
+    if (email == "") {
+      toastr.error("Email can't be empty")
     }else if (password == "") {
-      pesanError("Password Can't be Empty")
+      toastr.error("Password can't be empty")
     }else{
-      $("#signin").html("Loading...")
-      $("#signin").prop("disabled", true); 
-      var settings = {
+      if (validateEmail(email)) {
+        $("#login").hide()
+        $("#loading").show()
+        var settings = {
         "url": "./auth/login",
         "method": "POST",
         "timeout": 0,
@@ -187,16 +166,16 @@
           "Content-Type": "application/x-www-form-urlencoded",
         },
         "data": {
-          "username": username,
-          "password": password,
+          "email": email,
+          "password": password
         }
       };
 
       $.ajax(settings).done(function (response) {
-        $("#signin").html("Sign Me In")
-        $("#signin").prop("disabled", false); 
-        $("#user_login").val("")
-        $("#password_login").val("")
+        $("#loading").hide()
+        $("#login").show()
+        $("#email").val("")
+        $("#password").val("")
         if (response.code == 200) {
           toastr.success(response.message)
           setTimeout(function() {
@@ -206,49 +185,59 @@
           toastr.error(response.message)
         }
       });
+      }else{
+        toastr.error("Email not valid")
+      }
     }
   }
-$("#register").click(()=>{
-  var username = $("#username_reg").val()
-  var email = $("#email_reg").val()
-  var password = $("#password_reg").val()
-  if (username == "") {
-    toastr.error("Username can't be empty")
-  }else if (email == "") {
-    toastr.error("Email can't be empty")
-  }else if (password == "") {
-    toastr.error("Password can't be empty")
-  }else{
-    $("#register").html("Loading...")
-    $("#register").prop("disabled", true); 
-    var settings = {
-        "url": "./register/action",
-        "method": "POST",
-        "timeout": 0,
-        "headers": {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        "data": {
-          "username": username,
-          "password": password,
-          "email":email
-        }
-      };
+  function daftar() {
+    var email = $("#email_reg").val()
+    var username = $("#username_reg").val()
+    var password = $("#password_reg").val()
+    if (username == "") {
+      toastr.error("Username can't be empty")
+    }else if (email == "") {
+      toastr.error("Email can't be empty")
+    }else if (password == "") {
+      toastr.error("Password can't be empty")
+    }else{
+      if (validateEmail(email)) {
+        $("#btn_daftar").hide()
+        $("#loading_register").show()
+        var settings = {
+          "url": "./register/action",
+          "method": "POST",
+          "timeout": 0,
+          "headers": {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          "data": {
+            "username": username,
+            "email": email,
+            "password": password
+          }
+        };
 
-      $.ajax(settings).done(function (response) {
-        $("#register").html("Sign Me Up")
-        $("#register").prop("disabled", false); 
-        if (response.code == 200) {
-          toastr.success(response.message)
-          setTimeout(function() {
-            window.location.href="./"
-          },1500)
-        }else{
-          toastr.error(response.message)
-        }
-      });
+        $.ajax(settings).done(function (response) {
+          $("#btn_daftar").show()
+          $("#loading_register").hide()
+          $("#username_reg").val("")
+          $("#email_reg").val("")
+          $("#password_reg").val("")
+          if (response.code == 200) {
+            toastr.success(response.message)
+            setTimeout(function() {
+              window.location.href="./"
+            },1500)
+          }else{
+            toastr.error(response.message)
+          }
+        })
+      }else{
+        toastr.error("Email not valid")
+      }
+    }
   }
-})
 </script>
 </body>
 </html>
