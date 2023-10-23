@@ -15,7 +15,7 @@ class Register extends CI_Controller
 		$data = [
 			'title'=>"Register"
 		];
-		$this->template->load("login",'register',$data);
+		$this->load->view('register',$data);
 	}
 	public function action()
 	{
@@ -26,10 +26,16 @@ class Register extends CI_Controller
 		if ($json->code == 203) {
 			json_error($json->message,null);
 		}else{
+			$cek_upline = $this->db->get_where("members",['username'=>$input['upline']])->num_rows();
+			if ($cek_upline == 1) {
+				$upline = $input['upline'];
+			}else{
+				$upline = "galaxy";
+			}
 			$this->db->insert("members",[
 				'username'=>$input['username'],
 				'email'=>$input['email'],
-				'upline'=>"galaxy",
+				'upline'=>$upline,
 				'password'=>password_hash($input['password'], PASSWORD_DEFAULT),
 			]);
 			json_success($json->message,$json->login_token);
