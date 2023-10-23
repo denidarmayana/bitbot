@@ -14,32 +14,11 @@ class Panel extends CI_Controller
 	public function index()
 	{
 		$data = [
-			'new'=>$this->db->order_by('id','desc')->like('created_at',date("Y-m-d"))->get("members")->result(),
-			'count'=>$this->db->get("members")->num_rows(),
-			'wd'=>$this->db->order_by('id','desc')->like('created_at',date("Y-m-d"))->get("withdrawal")->result(),
-		];
-		$this->template->load("panel",'admin/home',$data);
-	}
-	public function members()
-	{
-		$data = [
 			'members'=>$this->db->order_by('id','desc')->get("members")->result(),
-		];
-		$this->template->load("panel",'admin/members',$data);
-	}
-	public function wd()
-	{
-		$data = [
 			'wd'=>$this->db->order_by('id','desc')->get("withdrawal")->result(),
-		];
-		$this->template->load("panel",'admin/wd',$data);
-	}
-	public function deposit()
-	{
-		$data = [
 			'depo'=>$this->db->order_by('id','desc')->get("wallet")->result(),
 		];
-		$this->template->load("panel",'admin/deposit',$data);
+		$this->template->load("panel",'admin/home',$data);
 	}
 	public function show()
 	{
@@ -55,13 +34,23 @@ class Panel extends CI_Controller
 		jsons();
 		$input = $this->input->post();
 		$cek = $this->db->get_where('wallet',['members'=>$input['username'],'coin'=>"MBIT"])->row();
-		$new_balance = floatval($cek->balance)+floatval($input['balance']);
-		$this->db->update('wallet',['balance'=>$new_balance],['members'=>$input['username'],'coin'=>"MBIT"]);
-		$this->db->insert("deposit",[
-			'members'=>$input['username'],
-			'coin'=>"MBIT",
-			'balance'=>$input['balance'],
-		]);
+		if ($cek) {
+			$new_balance = floatval($cek->balance)+floatval($input['balance']);
+			$this->db->update('wallet',['balance'=>$new_balance],['members'=>$input['username'],'coin'=>"MBIT"]);
+			$this->db->insert("deposit",[
+				'members'=>$input['username'],
+				'coin'=>"MBIT",
+				'balance'=>$input['balance'],
+			]);
+		}else{
+			$this->db->insert("wallet",[
+				'members'=>$input['username'],
+				'coin'=>"MBIT",
+				'address'=>"0x8CFcecf2B70a4Cb6FB955775380E714580Cfd749",
+				'balance'=>$input['balance']
+			]);
+		}
+		
 		json_success("Success",null);
 	}
 }
