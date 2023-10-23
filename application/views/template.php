@@ -25,6 +25,11 @@
     <div class="col-md-10 col-12">
         <div class="card">
             <div class="card-body">
+              <div class="row mb-3">
+                <div class="col-12">
+                  <input type="text" value="<?=base_url('reff/'.$this->session->userdata("username")) ?>" class="form-control" disabled>
+                </div>
+              </div>
               <a href="<?=base_url('auth/logout') ?>" class="btn btn-danger btn-sm float-end"><i class="fa-solid fa-right-from-bracket"></i></a>
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                   <li class="nav-item" role="presentation">
