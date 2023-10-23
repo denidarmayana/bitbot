@@ -421,8 +421,6 @@
           if (trading) {
             if (reset_win == win) {
                 newval = $("#base_trade").val();
-              }else{
-                newval = ((parseInt(marti_win)/100)*parseFloat(response.data.base)) + parseFloat(response.data.base)
               }
               var actualPayouts = 95 / getChance();
               var payout = actualPayouts.toFixed(5);
@@ -469,7 +467,7 @@
             if (response.data.balance > newval) {
                     setTimeout(function() {
                         sendTrade(newval,payout,profit,response.data.balance)
-                    }, 1000);
+                    }, 500);
             }else{
                     isLoopRunning = false;
                     toastr.error("You don't have enought balance")
