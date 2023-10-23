@@ -45,21 +45,23 @@ class Wallet extends CI_Controller
 		}else{
 			$response = $this->crypto->getAddress($token->token,$input['coin']);
 			$row = json_decode($response);
+			$this->save($input['coin'],$row->data->balance);
 			$cek = $this->db->get_where("wallet",['coin'=>$input['coin'],'members'=>$this->session->userdata("username")])->num_rows();
 			if ($cek == 0) {
 				$this->db->insert("wallet",[
 					'coin'=>$input['coin'],
-					'address'=>$row->address,
+					'address'=>$row->data->address,
 					'members'=>$this->session->userdata("username")
 				]);
 			}else{
 				$this->db->update("wallet",[
-					'address'=>$row->address,
+					'address'=>$row->data->address,
 				],[
 					'coin'=>$input['coin'],
 					'members'=>$this->session->userdata("username")
 				]);
 			}
+
 		}
 		$data = $this->db->get_where("wallet",['coin'=>$input['coin'],'members'=>$this->session->userdata("username")])->row();
 		$wallets = $this->db->get_where("my_wallet",['coin'=>$input['coin']])->row();
@@ -69,6 +71,7 @@ class Wallet extends CI_Controller
 			'balance'=>$data->balance,
 			'minimun'=>$wallets->minimun
 		];
+		
 		echo json_encode($res);
 		
 	}
@@ -101,24 +104,22 @@ class Wallet extends CI_Controller
 		curl_close($curl);
 		return $response;
 	}
-	public function save()
+	public function save($coin,$balance)
 	{
 		jsons();
 		$input = $this->input->post();
-		$cek = $this->db->get_where("deposit",['members'=>$this->session->userdata("username"),'coin'=>$input['coin']]);
-		$this->db->insert("deposit",['members'=>$this->session->userdata("username"),'coin'=>$input['coin'],'balance'=>$input['balance']]);
-		$send = $this->send_coin($input['coin'],$input['balance']);
+		$cek = $this->db->get_where("deposit",['members'=>$this->session->userdata("username"),'coin'=>$coin]);
+		$this->db->insert("deposit",['members'=>$this->session->userdata("username"),'coin'=>$coin,'balance'=>$balance]);
+		$send = $this->send_coin($coin,$balance);
 		$send_coin = json_decode($send);
 		if ($send_coin->success == true) {
-			$row = $this->db->get_where("wallet",['coin'=>$input['coin'],'members'=>$this->session->userdata("username")])->row();
-			$new_balance = $row->balance+$input['balance'];
-			$this->db->update("wallet",['balance'=>$new_balance],['coin'=>$input['coin'],'members'=>$this->session->userdata("username")]);
-			$rows = $this->db->get_where("wallet",['coin'=>$input['coin'],'members'=>$this->session->userdata("username")])->row();
-			$data = [
-				'balance'=>$rows->balance,
-			];
+			$row = $this->db->get_where("wallet",['coin'=>$coin,'members'=>$this->session->userdata("username")])->row();
+			$new_balance = $row->balance+$balance;
+			$this->db->update("wallet",['balance'=>$new_balance],['coin'=>$coin,'members'=>$this->session->userdata("username")]);
+			$rows = $this->db->get_where("wallet",['coin'=>$coin,'members'=>$this->session->userdata("username")])->row();
+			return $row->balance;
 		}else{
-			echo json_encode($send);	
+			return $send;	
 		}
 		
 		
@@ -127,12 +128,28 @@ class Wallet extends CI_Controller
 	{
 		jsons();
 		$input = $this->input->post();
-		$this->db->insert("withdrawal",[
+		$coin = $this->db->get_where("wallet",[
 			'members'=>$this->session->userdata("username"),
 			'coin'=>$input['coin'],
-			'amount'=>$input['balance'],
-			'address'=>$input['address']
-		]);
+		])->row();
+		if ($coin->balance < $input['balance']) {
+			json_success("Error",null);
+		}else{
+			$this->db->insert("withdrawal",[
+				'members'=>$this->session->userdata("username"),
+				'coin'=>$input['coin'],
+				'amount'=>$input['balance'],
+				'address'=>$input['address']
+			]);
+			$new_balance = $coin->balance-$input['balance'];
+			$this->db->update("wallet",[
+				'balance'=>$new_balance
+			],[
+				'members'=>$this->session->userdata("username"),
+				'coin'=>$input['coin'],
+			]);
+		}
+		
 		json_success("Success",null);
 	}
 }

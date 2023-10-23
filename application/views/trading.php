@@ -134,18 +134,7 @@
 	<div class="col-md-8">
 		<div class="card">
 			<div class="card-body" style="height:250px;overflow: scroll;">
-				<table class="table table-bordered" id="tradeTable">
-					<thead>
-						<tr>
-							<th>TYPE</th>
-							<th>BASE</th>
-							<th>PROFIT</th>
-						</tr>
-					</thead>
-					<tbody id="tradeTable">
-						
-					</tbody>
-				</table>
+				
 			</div>
 		</div>
 	</div>
