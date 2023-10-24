@@ -23,7 +23,7 @@ class Register extends CI_Controller
 		$input = $this->input->post();
 		$response = $this->crypto->register($input['username'],$input['email'],$input['password']);
 		$json = json_decode($response);
-		if ($json->code == 203) {
+		if ($json->success == false) {
 			json_error($json->message,null);
 		}else{
 			$cek_upline = $this->db->get_where("members",['username'=>$input['upline']])->num_rows();
