@@ -372,21 +372,24 @@
   })
   function startTrade() {
     if (coin == "") {
-      
       toastr.error("Please select coin for start trading")
     }else if($("#balance").html() < base_trade){
       toastr.error("Ypur have doesn't enought balance")
     }else{
+      console.log("start")
       $("#start").hide();
       $("#stop").show()
-      base_trade =  $("#base_trade").val()
-      var actualPayouts = 95 / getChance();
-      var payout = actualPayouts.toFixed(5);
-      var base = parseFloat(base_trade).toFixed(8)
-      const betAmt = new BigNumber(base);
-      const actualPayout = new BigNumber(payout);
-      const profit = betAmt.times(actualPayout).minus(betAmt);
-      sendTrade(base_trade,payout,profit,balance)
+      trading = true;
+      if (trading) {
+        base_trade =  $("#base_trade").val()
+        var actualPayouts = 95 / getChance();
+        var payout = actualPayouts.toFixed(5);
+        var base = parseFloat(base_trade).toFixed(8)
+        const betAmt = new BigNumber(base);
+        const actualPayout = new BigNumber(payout);
+        const profit = betAmt.times(actualPayout).minus(betAmt);
+        sendTrade(base_trade,payout,profit,balance)
+      }
     }
   }
   function sendTrade(base_trade,payout,profit,balance) {
