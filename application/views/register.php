@@ -100,7 +100,7 @@
     var email = $("#email_reg").val()
     var username = $("#username_reg").val()
     var password = $("#password_reg").val()
-    var upline = $("#upline_reg").val()
+    var upline = $("#uppline_reg").val()
     if (username == "") {
       toastr.error("Username can't be empty")
     }else if (email == "") {
