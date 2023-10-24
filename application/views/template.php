@@ -185,7 +185,7 @@
                   <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                     <div class="mb-3 row">
                         <div class="col-sm-12 col-12">
-                          <label class="text-center text-warning mt-3">Bonus Rebet</label>
+                          <label class="text-center text-warning mt-3">Bonus Referral</label>
                             <table width="100%" cellpadding="5">
                               <tr>
                                   <td width="80%"><input type="text" class="form-control text-warning" id="rebeat" disabled></td>
