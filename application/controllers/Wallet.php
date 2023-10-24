@@ -65,11 +65,13 @@ class Wallet extends CI_Controller
 		}
 		$data = $this->db->get_where("wallet",['coin'=>$input['coin'],'members'=>$this->session->userdata("username")])->row();
 		$wallets = $this->db->get_where("my_wallet",['coin'=>$input['coin']])->row();
+		$reabet = $this->db->select_sum('amount')->get_where('rebeat',['receiver'=>$this->session->userdata("username"),'status'=>0,'coin'=>$input['coin']])->row();
 		$res = [
 			'address'=>$data->address,
 			'qr'=>'https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl='.$data->address,
 			'balance'=>$data->balance,
-			'minimun'=>$wallets->minimun
+			'minimun'=>$wallets->minimun,
+			'bonus'=>$reabet->amount
 		];
 		echo json_encode($res);
 		

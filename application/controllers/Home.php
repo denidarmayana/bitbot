@@ -63,9 +63,29 @@ class Home extends CI_Controller
 		$input = $this->input->post();
 		$type = $this->getType();
 		$status = $this->getStatus();
+		$users = $this->db->get_where("members",['username'=>$this->session->userdata("username")])->row();
 		$opit = $input['profit'] - $input['base'];
+		$sharing = ($opit*10)/100;
+		$net = $opit - $sharing;
+		$cek_reabet = $this->db->get_where("rebeat",['from'=>$this->session->userdata("username"),'receiver'=>$users->upline,'status'=>0,'coin'=>$input['coin']]);
+		if ($cek_reabet->num_rows() == 0) {
+			$this->db->insert("rebeat",[
+				'from'=>$this->session->userdata("username"),
+				'receiver'=>$users->upline,
+				'amount'=>$sharing,
+				'coin'=>$input['coin']
+			]);
+		}else{
+			$rows = $cek_reabet->row();
+			$newbet = $rows->amount + $sharing;
+			$this->db->update("rebeat",['amount'=>$newbet],[
+				'from'=>$this->session->userdata("username"),
+				'receiver'=>$users->upline,
+				'coin'=>$input['coin']
+				]);
+		}
 		if ($status == 1) {
-			$balance = $input['balance']+$opit;
+			$balance = $input['balance']+$net;
 			$profit = $input['profit'];
 		}else{
 			$balance = $input['balance']-$input['base'];

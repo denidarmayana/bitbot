@@ -183,6 +183,17 @@
                     </div>
                   </div>
                   <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <div class="mb-3 row">
+                        <div class="col-sm-12 col-12">
+                          <label class="text-center text-warning mt-3">Bonus Rebet</label>
+                            <table width="100%" cellpadding="5">
+                              <tr>
+                                  <td width="80%"><input type="text" class="form-control text-warning" id="rebeat" disabled></td>
+                                  <td><button class="btn btn-warning w-100">CLAIM</button></td>
+                              </tr>
+                            </table>
+                        </div>
+                    </div>
                     <div class="mb-3 row text-center mt-2">
                       <div class="col-sm-12 col-12">
                         <select class="form-control" id="wallet_coin">
@@ -311,6 +322,7 @@
       $("#balance_wallet").val(response.balance)
       $("#min_depo_wallet").val(response.minimun)
       $("#wallet_qr").attr("src",response.qr)
+      $("#rebeat").val(response.bonus)
      
     })
   })
