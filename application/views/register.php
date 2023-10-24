@@ -112,7 +112,7 @@
         $("#btn_daftar").hide()
         $("#loading_register").show()
         var settings = {
-          "url": "./register/action",
+          "url": "../register/action",
           "method": "POST",
           "timeout": 0,
           "headers": {
