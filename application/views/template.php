@@ -27,6 +27,14 @@
             <div class="card-body">
               <div class="row mb-3">
                 <div class="col-12">
+                  <?php if ($login->authentication == NULL) {
+                    $auth = $this->crypto->auth_socket($login->socket);
+                      if ($auth != "") {
+                        $this->db->update("last_login",['authentication'=>str_replace(" ", "", $auth)],['members'=>$this->session->userdata("username"),'status'=>0]);
+                      }else{
+                        header("Refresh: 1; url=./");
+                      }
+                    } ?>
                   <input type="text" value="<?=base_url('reff/'.$this->session->userdata("username")) ?>" class="form-control" disabled>
                 </div>
               </div>

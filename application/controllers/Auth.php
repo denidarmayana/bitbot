@@ -34,25 +34,13 @@ class Auth extends CI_Controller
 			if(password_verify($input['password'], $row->password)){
 				$response = $this->crypto->login($input['email'],$input['password']);
 				$json = json_decode($response);
-				if($json->code == 200){
-					$socket = $this->crypto->socket($json->data);
-					$soket = json_decode($socket);
-					if ($soket->code == 200) {
-						$this->db->insert("last_login",[
-							'members'=>$row->username,
-							'token'=>$json->data,
-							'socket'=>$soket->data->token,
-							'last_login'=>date("Y-m-d H:i:s")
-						]);
-						$this->session->set_userdata([
+				if($json->success == true){
+					$this->session->set_userdata([
 							'login'=>true,
-							'username'=>$row->username
+							'username'=>$row->username,
+							'login_token'=>$json->token
 						]);
-						json_success($json->message,null);
-					}else{
-						json_error($soket->message,null);
-					}
-					
+					json_success($json->message,null);
 				}else{
 					json_error($json->message,null);
 				}

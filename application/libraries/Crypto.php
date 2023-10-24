@@ -27,10 +27,11 @@ class Crypto
 	public function login($email,$password)
 	{
 		$data = '{
-			    "email":"'.$email.'",
-			    "password":"'.$password.'"
+			    "user":"'.$email.'",
+			    "password":"'.$password.'",
+			    "api_key":"31c84acdf24da08c2e60fcf28ee08a64792d38692182533905dc62c04776f8d4"
 			}';
-		return $this->curl("http://localhost:3000/api/auth",$data);
+		return $this->curl("https://api.pasino.io/api/login",$data);
 	}
 	public function getAddress($token,$coin)
 	{
@@ -38,14 +39,28 @@ class Crypto
 			"token":"'.$token.'",
 			"coin":"'.$coin.'"
 		}';
-		return $this->curl("http://localhost:3000/api/address",$data);
+		return $this->curl("https://api.pasino.io/deposit/get-deposit-information",$data);
 	}
 	public function socket($token)
 	{
 		$data = '{
 			"token":"'.$token.'"
 		}';
+		return $this->curl("https://api.pasino.io/account/get-socket-token",$data);
+	}
+	public function auth_socket($token)
+	{
+		$data = '{
+			"token":"'.$token.'"
+		}';
 		return $this->curl("http://localhost:3000/api/socket",$data);
+	}
+	public function getBalance($coin)
+	{
+		$data = '{
+			"coin":"'.$coin.'"
+		}';
+		return $this->curl("http://localhost:3000/api/address",$data);
 	}
 	public function send($token,$coin,$address,$amount)
 	{
@@ -61,10 +76,13 @@ class Crypto
 	public function register($username,$email,$password)
 	{
 		$data = '{
-			"username":"'.$username.'",
-			"email":"'.$email.'",
-			"password":"'.$password.'"
+			"user_name":"'.$username.'",
+			"user_email":"'.$email.'",
+			"password":"'.$password.'",
+			"agreement":"1",
+      		"referrer":"1234556",
+      		"api_key":"31c84acdf24da08c2e60fcf28ee08a64792d38692182533905dc62c04776f8d4"
 		}';
-		return $this->curl("http://localhost:3000/api/register",$data);
+		return $this->curl("https://api.pasino.io/api/register",$data);
 	}
 }

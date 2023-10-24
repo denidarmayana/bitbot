@@ -45,17 +45,17 @@ class Wallet extends CI_Controller
 		}else{
 			$response = $this->crypto->getAddress($token->token,$input['coin']);
 			$row = json_decode($response);
-			$this->save($input['coin'],$row->data->balance);
+			
 			$cek = $this->db->get_where("wallet",['coin'=>$input['coin'],'members'=>$this->session->userdata("username")])->num_rows();
 			if ($cek == 0) {
 				$this->db->insert("wallet",[
 					'coin'=>$input['coin'],
-					'address'=>$row->data->address,
+					'address'=>$row->address,
 					'members'=>$this->session->userdata("username")
 				]);
 			}else{
 				$this->db->update("wallet",[
-					'address'=>$row->data->address,
+					'address'=>$row->address,
 				],[
 					'coin'=>$input['coin'],
 					'members'=>$this->session->userdata("username")
@@ -71,7 +71,6 @@ class Wallet extends CI_Controller
 			'balance'=>$data->balance,
 			'minimun'=>$wallets->minimun
 		];
-		
 		echo json_encode($res);
 		
 	}
