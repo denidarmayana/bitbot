@@ -135,7 +135,7 @@
           if (response.code == 200) {
             toastr.success(response.message)
             setTimeout(function() {
-              window.location.href="./"
+              window.location.href="../"
             },1500)
           }else{
             toastr.error(response.message)
