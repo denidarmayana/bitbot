@@ -45,7 +45,7 @@ class Home extends CI_Controller
 		jsons();
 		$input = $this->input->post();
 		$type = $this->getType();
-		$status = $this->getStatus();
+		$wining = mt_rand(1, 100);
 		$users = $this->db->get_where("members",['username'=>$this->session->userdata("username")])->row();
 		$opit = $input['profit'] - $input['base'];
 		$sharing = ($opit*10)/100;
@@ -67,10 +67,12 @@ class Home extends CI_Controller
 				'coin'=>$input['coin']
 				]);
 		}
-		if ($status == 1) {
+		if ($wining <= 20) {
+			$status = 1;
 			$balance = $input['balance']+$net;
 			$profit = $input['profit'];
 		}else{
+			$status = 0;
 			$balance = $input['balance']-$input['base'];
 			$profit = $input['base'];
 		}
