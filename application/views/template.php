@@ -268,6 +268,7 @@
   </div>
 </div>
 <script type="text/javascript">
+ 
   $("#loading_wd").hide();
   $("#submit_wd").click(()=>{
     var wallet = $("#wd_wallet").val()
@@ -379,9 +380,10 @@
       console.log("start")
       $("#start").hide();
       $("#stop").show()
-      trading = true;
+      trading = true
       if (trading) {
         base_trade =  $("#base_trade").val()
+        balance = $("#balance").html()
         var actualPayouts = 95 / getChance();
         var payout = actualPayouts.toFixed(5);
         var base = parseFloat(base_trade).toFixed(8)

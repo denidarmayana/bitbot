@@ -12,24 +12,7 @@ class Home extends CI_Controller
 	}
 	public function index()
 	{
-		$socket = $this->crypto->socket($this->session->userdata("login_token"));
-		$s = json_decode($socket);
-		$cek = $this->db->get_where("last_login",['members'=>$this->session->userdata("username"),'status'=>0])->num_rows();
-		if ($cek == 0) {
-			$this->db->insert("last_login",[
-				'members'=>$this->session->userdata("username"),
-				'token'=>$this->session->userdata("login_token"),
-				'socket'=>$s->socket_token
-			]);
-		}else{
-			$this->db->update("last_login",[
-				'token'=>$this->session->userdata("login_token"),
-				'socket'=>$s->socket_token
-			],[
-				'members'=>$this->session->userdata("username"),
-				'status'=>0
-			]);
-		}
+		
 		$data = [
 			'title'=>"Dashboard",
 			'menu'=>"home",
