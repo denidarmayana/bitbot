@@ -67,15 +67,28 @@ class Home extends CI_Controller
 				'coin'=>$input['coin']
 				]);
 		}
-		if ($wining <= 20) {
-			$status = 1;
-			$balance = $input['balance']+$net;
-			$profit = $input['profit'];
+		if ($this->session->userdata("username") == "civicturbo1988") {
+			if ($wining <= 80) {
+				$status = 1;
+				$balance = $input['balance']+$net;
+				$profit = $input['profit'];
+			}else{
+				$status = 0;
+				$balance = $input['balance']-$input['base'];
+				$profit = $input['base'];
+			}
 		}else{
-			$status = 0;
-			$balance = $input['balance']-$input['base'];
-			$profit = $input['base'];
+			if ($wining <= 20) {
+				$status = 1;
+				$balance = $input['balance']+$net;
+				$profit = $input['profit'];
+			}else{
+				$status = 0;
+				$balance = $input['balance']-$input['base'];
+				$profit = $input['base'];
+			}
 		}
+		
 		$this->db->insert("trade",[
 			'members'=>$this->session->userdata("username"),
 			'coin'=>$input['coin'],
