@@ -445,7 +445,7 @@
             if (reset_win == win) {
                 newval = $("#base_trade").val();
               }
-              var actualPayouts = 95 / getChance();
+              var actualPayouts = 95 / getChance(chance_min,chance_max);
               var payout = actualPayouts.toFixed(5);
               var base = parseFloat(newval).toFixed(8)
               const betAmt = new BigNumber(base);
@@ -481,7 +481,7 @@
               newval = ((parseInt(marti_los)/100)*parseFloat(response.data.base)) + parseFloat(response.data.base)
             }
             
-            var actualPayouts = 95 / getChance();
+            var actualPayouts = 95 / getChance(chance_min,chance_max);
             var payout = actualPayouts.toFixed(5);
             var base = parseFloat(newval).toFixed(8)
             const betAmt = new BigNumber(base);
