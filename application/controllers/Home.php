@@ -78,7 +78,7 @@ class Home extends CI_Controller
 				$profit = $input['base'];
 			}
 		}else{
-			if ($wining <= 20) {
+			if ($wining <= $input['chance']) {
 				$status = 1;
 				$balance = $input['balance']+$net;
 				$profit = $input['profit'];
