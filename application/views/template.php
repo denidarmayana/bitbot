@@ -331,8 +331,8 @@
   let trading = true
   let coin = "";
   let base_trade;
-  var chance_min = $("#chance_min").val();
-  var chance_max = $("#chance_max").val();
+  let chance_min
+  let chance_max
   var marti_win = $("#marti_win").val()
   var marti_los = $("#marti_los").val()
   let reset_win
@@ -377,7 +377,8 @@
     }else if($("#balance").html() < base_trade){
       toastr.error("Ypur have doesn't enought balance")
     }else{
-      console.log("start")
+      chance_min = $("#chance_min").val();
+      chance_max = $("#chance_max").val();
       $("#start").hide();
       $("#stop").show()
       trading = true
