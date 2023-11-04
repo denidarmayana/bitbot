@@ -397,6 +397,8 @@
     }
   }
   function sendTrade(base_trade,payout,profit,balance,chance) {
+    chance_min = $("#chance_min").val();
+    chance_max = $("#chance_max").val();
     reset_win = $("#win_reset").val()
     reset_los = $("#los_reset").val()
      var settings = {
