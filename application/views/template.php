@@ -340,9 +340,9 @@
   let val_shot
   let val_boom
   let newval
-  function getChance() {
-    min = Math.ceil(chance_min);
-    max = Math.floor(chance_max);
+  function getChance(min,max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
     return Math.floor(Math.random() * (max - min)) + min;
   }
 
@@ -384,17 +384,18 @@
       if (trading) {
         base_trade =  $("#base_trade").val()
         balance = $("#balance").html()
-        var actualPayouts = 95 / getChance();
+
+        var actualPayouts = 95 / getChance(chance_min,chance_max);
         var payout = actualPayouts.toFixed(5);
         var base = parseFloat(base_trade).toFixed(8)
         const betAmt = new BigNumber(base);
         const actualPayout = new BigNumber(payout);
         const profit = betAmt.times(actualPayout).minus(betAmt);
-        sendTrade(base_trade,payout,profit,balance)
+        sendTrade(base_trade,payout,profit,balance,getChance(chance_min,chance_max))
       }
     }
   }
-  function sendTrade(base_trade,payout,profit,balance) {
+  function sendTrade(base_trade,payout,profit,balance,chance) {
     reset_win = $("#win_reset").val()
     reset_los = $("#los_reset").val()
      var settings = {
@@ -407,7 +408,7 @@
       "data": {
         "coin": coin,
         'base': base_trade,
-        'chance': getChance(),
+        'chance': chance,
         'payout': payout,
         'profit': parseFloat(profit.toString()).toFixed(8),
         'balance': balance,
@@ -449,7 +450,7 @@
               const profit = betAmt.times(actualPayout).minus(betAmt);
               if (response.data.balance > newval) {
                 setTimeout(function() { 
-                  sendTrade(newval,payout,profit,response.data.balance)
+                  sendTrade(newval,payout,profit,response.data.balance,getChance(chance_min,chance_max))
                 },500)
                 
               }else{
@@ -485,7 +486,7 @@
             const profit = betAmt.times(actualPayout).minus(betAmt);
             if (response.data.balance > newval) {
                     setTimeout(function() {
-                        sendTrade(newval,payout,profit,response.data.balance)
+                        sendTrade(newval,payout,profit,response.data.balance,getChance(chance_min,chance_max))
                     }, 500);
             }else{
                     isLoopRunning = false;
