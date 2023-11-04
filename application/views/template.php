@@ -417,7 +417,7 @@
     };
 
     $.ajax(settings).done(function (response) {
-      console.log(getChance())
+      console.log(chance)
       balance = response.data.balance.toFixed(8)
       var table = document.getElementById("tradeTable");
       var newRow = table.insertRow(1);
