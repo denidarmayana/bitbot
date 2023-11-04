@@ -331,8 +331,8 @@
   let trading = true
   let coin = "";
   let base_trade;
-  let chance_min
-  let chance_max
+  let chance_min = 0;
+  let chance_max = 0;
   var marti_win = $("#marti_win").val()
   var marti_los = $("#marti_los").val()
   let reset_win
